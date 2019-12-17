@@ -1,0 +1,31 @@
+version: "3"
+services:
+  pltform:
+    image: ddfddf/fuzzdebugplatform:v0.1
+    ports:
+      - "43000:43000"
+    volumes:
+      - ./tidb3.0.7:/source
+      - ./exampleyy:/exampleyy
+    command:
+      - "-Y"
+      - "/exampleyy/windows.yy"
+      - "--dsn1"
+      - "root:@tcp(tw:4000)/randgen"
+      - "--dsn2"
+      - "root:@tcp(mysql:3306)/randgen"
+      - "-Q"
+      - "1000"
+      - "--debug"
+      - "-S"
+      - "/source"
+      - "-T"
+      - "http://tw:43222"
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  tw:
+    image: ddfddf/tidb-wrappered:v3.0.7
